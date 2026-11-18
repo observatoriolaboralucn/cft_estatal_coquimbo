@@ -692,7 +692,7 @@ nav.top .navrow ul{overscroll-behavior-x:contain}
   <h1>Herramienta de consulta de vinculación con capacitación y certificación del CFT Estatal de la Región de Coquimbo</h1>
   <p>CFT Estatal de la Región de Coquimbo. Perfiles ocupacionales ChileValora, carreras técnicas, articulación curricular, certificación de competencias laborales y Planes Formativos SENCE, con trazabilidad de cada indicador a sus registros de origen.</p>
   <div class="stamps">
-    <span class="stamp">Versión del anexo: 23 de octubre de 2026 · Consolidada</span>
+    <span class="stamp">Versión final · Revisión editorial: 18 de noviembre de 2026</span>
     <span class="stamp">Matriz del CFT: versión del 5 de octubre de 2026</span>
     <span class="stamp">ChileValora: recopilación del 21 al 23 de agosto de 2026</span>
     <span class="stamp">SENCE: estadísticas 2025 · catálogo de Planes Formativos del 26 de agosto de 2026</span>
@@ -995,7 +995,7 @@ function quickRead(text,limit,ids) {
   return h('div',{class:'quick',role:'note'},h('p',null,text),h('p',{class:'mini'},limit,' ',links.map(x=>h('a',{href:'#'+x.id},'Hallazgo '+x.n+' '))));
 }
 function finding(kind, ...kids) {
-  const t = { obs: 'Evidencia observada', interp: 'Interpretación técnica sustentada', valid: 'Requiere validación institucional' }[kind];
+  const t = { obs: 'Evidencia observada', interp: 'Interpretación técnica sustentada', valid: 'Alcance institucional' }[kind];
   return h('div', { class: 'finding ' + kind }, h('div', { class: 'tag' }, t), h('p', null, ...kids));
 }
 function sourceEntries(keys, includeDocument = false) {
@@ -1299,8 +1299,8 @@ function legend(items) {
 // Vigencia documental del perfil; nunca equivale a vigencia del convenio o del centro.
 function profileValidity(code) {
   const cat=catByBase.get(baseOf(code));
-  if(!cat)return 'Sin correspondencia en el catálogo consultado; vigencia por confirmar';
-  if(cat.c!==String(code).toUpperCase().trim())return 'Versión citada: vigencia por confirmar. Referencia '+cat.c+': '+(cat.vg||'fecha no informada');
+  if(!cat)return 'Sin correspondencia en el catálogo consultado; vigencia no acreditada por esta fuente';
+  if(cat.c!==String(code).toUpperCase().trim())return 'Versión citada: vigencia no acreditada por esta fuente. Referencia '+cat.c+': '+(cat.vg||'fecha no informada');
   if(!cat.vg)return 'Misma versión; fecha de vigencia no informada';
   const match=String(cat.vg).match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
   const stamp=match?match[3]+'-'+match[2]+'-'+match[1]:null;
@@ -1377,7 +1377,7 @@ function dataTable(cols, rows, opt = {}) {
     const previousViewport=opt.roomy?wrap.querySelector('.tw'):null;
     const previousScroll=previousViewport?{left:previousViewport.scrollLeft,top:previousViewport.scrollTop}:null;
     clear(wrap);
-    if(hasProfiles)wrap.appendChild(h('details',{class:'table-context'},h('summary',null,'Vigencia del perfil: alcance de la fecha'),h('p',{class:'mini'},'Catálogo recopilado en agosto de 2026; contraste al 22-10-2026. Si la versión citada es distinta, su vigencia queda por confirmar. La fecha del perfil no acredita vigencia del convenio ni disponibilidad de certificación. Una fecha pendiente de confirmar en el catálogo no elimina un registro de articulación ni cambia las asignaturas convalidadas que informa esa fuente.')));
+    if(hasProfiles)wrap.appendChild(h('details',{class:'table-context'},h('summary',null,'Vigencia del perfil: alcance de la fecha'),h('p',{class:'mini'},'Catálogo recopilado en agosto de 2026; contraste al 22-10-2026. Si la versión citada es distinta, el catálogo no permite establecer su vigencia. La fecha del perfil no acredita vigencia del convenio ni disponibilidad de certificación. Una fecha no acreditada en el catálogo no elimina un registro de articulación ni cambia las asignaturas convalidadas que informa esa fuente.')));
     let data = rows;
     if (state.sort !== null) {
       const c = cols[state.sort];
@@ -1461,7 +1461,7 @@ function refreshPanelNav(section) {
     s5: [['filtros','Elegir carrera y semestre',section.querySelector('.controls')],['perfiles','Perfiles y vínculos',section.querySelector('#carProfiles')],['curriculo','Módulos y UCL',foldBy('Detalle curricular')],['programa','Programa de estudio',foldBy('Programa de estudio:')],['articulacion','Articulación',foldBy('Articulación del CFT')]],
     s6: [['historia','Historial y centros',section.querySelector('.grid.g2')],['diagrama','Explorar diagrama',diagram],['versiones','Versiones en centros',stageBy('Versiones de perfiles')],['fuente','Fuentes',source]],
     s7: [['diagrama','Explorar diagrama',diagram],['correspondencias','Filtrar planes vinculados',foldBy('Ver detalle: tabla filtrable')],['requisitos','Requisitos de los planes',section.querySelector('#sence-requisitos-catalogo')],['catalogo','Catálogo completo',foldBy('Catálogo completo:')],['estadisticas','Estadísticas regionales',foldBy('Detalle: Catálogo nacional')],['fuente','Fuentes',source]],
-    s8: [['hallazgos','Leer hallazgos',section.querySelector('#hall1')],['indice','Elegir un tema',section.querySelector('.hall-index')],['prioridades','Agenda propuesta',section.querySelector('#prioridades-hallazgos')],['casos','Casos para revisión',section.querySelector('#revision-casos')],['fuente','Fuentes',source]],
+    s8: [['hallazgos','Leer hallazgos',section.querySelector('#hall1')],['indice','Elegir un tema',section.querySelector('.hall-index')],['prioridades','Recomendaciones',section.querySelector('#prioridades-hallazgos')],['casos','Casos para revisión',section.querySelector('#revision-casos')],['fuente','Fuentes',source]],
     s9: [['filtros','Buscar y filtrar',section.querySelector('#expQ')],['resultados','Ver resultados',section.querySelector('#expResults')],['fuente','Fuentes',source]],
     s10: [['fuentes','Fuentes y fechas',section.querySelector('#s10-panel-fuentes')],['respaldo','Materiales y observaciones',section.querySelector('#respaldo-materiales')],['definiciones','Definiciones',foldBy('Definiciones')],['procesamiento','Criterios de cálculo',foldBy('Criterios de procesamiento')],['indicadores','Indicadores',foldBy('Indicadores y definiciones')]],
   };
@@ -1759,29 +1759,29 @@ function communicationRows() {
       matches.length ? 'Mismo código base, versión distinta en esta carrera' :
       'Sin correspondencia por código en la articulación de esta carrera';
     return {...r,k,declared,match,codeReview:programCodeNote(r.cod),fileBDD:D.prog[k].archivo_original_bdd||D.prog[k].archivo,formalCodes:matches.map(a=>a.c).join('; '),
-      framing:declared?'Presentada expresamente como perfil ChileValora; alcance por confirmar':'Sin identificación expresa como ChileValora; naturaleza por confirmar',
+      framing:declared?'Mención explícita a un perfil ChileValora':'Sin identificación expresa como ChileValora',
       followup:declared?'Confirmar si anuncia certificación ChileValora o referencia curricular; identificar perfil y versión, centro acreditado, proceso de evaluación y acuerdo que respalda la ruta.':'Identificar si corresponde a certificación académica del CFT u otra credencial, quién la otorga y sus requisitos; no exigir coincidencia automática con RAP.',
       file:D.prog[k].archivo};
   }));
 }
 function curriculumHypothesis() {
-  return fold('Uso curricular de la matriz · validación pendiente',h('p',{class:'mini'},
-    'La matriz documenta asociaciones entre perfiles, UCL y módulos. La capacitación y el Modelo Educativo del CFT respaldan el uso de estos estándares como referentes curriculares. Está pendiente de validación del CFT cómo aplicó la matriz del 5 de octubre de 2026 en el diseño o actualización de sus programas. No se exige coincidencia total con el registro de reconocimiento para convalidar asignaturas.'),false);
+  return fold('Alcance curricular de la matriz',h('p',{class:'mini'},
+    'La matriz documenta asociaciones entre perfiles, UCL y módulos. La capacitación y el Modelo Educativo del CFT respaldan el uso de estos estándares como referentes curriculares. La matriz no acredita por sí sola su aplicación en el diseño o actualización de los programas. El reconocimiento para convalidar asignaturas se documenta en su propio registro y no exige coincidencia total con los referentes curriculares.'),false);
 }
 function communicationReview(body) {
   const rows=communicationRows(), explicit=rows.filter(r=>r.declared);
   const stage=h('div',{class:'stage',id:'revision-comunicacion-cft'});
-  stage.appendChild(h('h3',null,'Qué se anuncia y qué falta confirmar'));
+  stage.appendChild(h('h3',null,'Credenciales anunciadas y alcance documental'));
   stage.appendChild(h('p',null,rows.length+' certificaciones semestrales en los programas de estudio publicados; '+explicit.length+' declaraciones explícitas de perfiles ChileValora, en '+uniq(explicit.map(r=>r.k)).length+' carreras. Las otras '+(rows.length-explicit.length)+' no se identifican expresamente como ChileValora y no se clasifican automáticamente como propias o externas.'));
   stage.appendChild(h('p',null,'Las declaraciones explícitas se concentran en '+uniq(explicit.map(r=>r.k)).join(', ')+'. Esas carreras no figuran en el registro de reconocimiento para convalidar asignaturas consultado. La diferencia se conserva como resultado documental y no demuestra, por sí sola, un error en lo anunciado.'));
-  stage.appendChild(h('p',{class:'mini'},'Para cada declaración deben confirmarse el tipo de credencial, quién la otorga, sus requisitos y el respaldo correspondiente. Si se ofrece certificación ChileValora, hay que identificar el centro acreditado y el proceso de evaluación. Los materiales incluyen documentos de 2024 y 2025; no se presume que sean la difusión actual del CFT. La similitud del nombre no confirma equivalencia.'));
+  stage.appendChild(h('p',{class:'mini'},'El respaldo de una credencial comprende su tipo, emisor, requisitos y mecanismo de obtención. La certificación ChileValora requiere un centro acreditado y un proceso de evaluación. Los materiales incluyen documentos de 2024 y 2025; no se presume que sean la difusión actual del CFT. La similitud del nombre no confirma equivalencia.'));
   stage.appendChild(fold('Revisar las certificaciones anunciadas y su respaldo por carrera',dataTable([
     {h:'Carrera del CFT Estatal de Coquimbo',v:r=>r.k},{h:'Semestre',n:true,v:r=>r.s},
     {h:'Certificación anunciada en el material',v:r=>r.n},{h:'Cómo se presenta',v:r=>r.framing},
     {h:'Código declarado',v:r=>r.cod||'No declarado'},{h:'Comparación documental con RAP de la misma carrera',v:r=>r.match},
     {h:'Código en articulación',v:r=>r.formalCodes||'Sin correspondencia identificada'},
     {h:'Revisión del código publicado',v:r=>r.codeReview||'Sin observación de formato en esta revisión'},
-    {h:'Qué confirmar con el CFT',v:r=>r.followup},{h:'Material de origen',v:r=>r.file},{h:'Nombre de archivo registrado en la BDD',v:r=>r.fileBDD},{h:'Página del material',v:r=>r.pg||'No informada'},
+    {h:'Criterios para el respaldo institucional',v:r=>r.followup},{h:'Material de origen',v:r=>r.file},{h:'Nombre de archivo registrado en la BDD',v:r=>r.fileBDD},{h:'Página del material',v:r=>r.pg||'No informada'},
     {h:'Observaciones del material',v:r=>progO(r.o)}
   ],rows,{max:20,csv:'revision_comunicacion_certificaciones_cft_coquimbo.csv'}),false));
   body.appendChild(stage);
@@ -1847,7 +1847,7 @@ function renderS1() {
   const announced=communicationRows().filter(r=>r.declared);
   const dimensions=[
     ['Reconocimiento de aprendizajes previos (RAP)','La base maestra de articulación registra los perfiles certificados que el CFT reconoce para convalidar asignaturas.','Es una vía de RAP. El RAP también puede reconocer aprendizajes por experiencia, mediante evaluación institucional.'],
-    ['Referentes curriculares','La matriz asocia perfiles y unidades de competencia laboral (UCL) con módulos de las carreras.','La aplicación específica de la matriz está pendiente de validación del CFT. Un referente curricular no equivale a una certificación otorgada.'],
+    ['Referentes curriculares','La matriz asocia perfiles y unidades de competencia laboral (UCL) con módulos de las carreras.','La matriz no acredita por sí sola su aplicación en los programas. Un referente curricular no equivale a una certificación otorgada.'],
     ['Certificaciones y credenciales','Los programas anuncian certificaciones semestrales cuyo tipo, emisor y requisitos deben confirmarse.','Una certificación académica del CFT y una certificación ChileValora son credenciales distintas. Esta última requiere un proceso mediante un centro acreditado.']
   ];
   body.appendChild(h('div',{class:'exec overview-focus',id:'tres-dimensiones'},
@@ -1985,7 +1985,7 @@ function showPerfil(cod, ctx) {
   add('Nombre citado en la matriz', uniq(MX.filter(r => r.cod === cod).map(r => r.nm).filter(Boolean)).join(' / ') || 'No se encontró un nombre para este código y versión en la matriz.');
   add('Código consultado', h('span', { class: 'code' }, cod));
   add('Vigencia del perfil consultado',profileValidity(cod));
-  if(programCodeNote(cod))add('Código publicado: verificación pendiente',programCodeNote(cod));
+  if(programCodeNote(cod))add('Código publicado: observación de formato',programCodeNote(cod));
   add('Nombre y código en el catálogo ChileValora', p.cat ? h('span', null, p.cat.n, h('br'), `Código en catálogo: `, h('span', { class: 'code' }, [...catByCod.keys()].find(c => baseOf(c) === p.base)), ' · ', stPill(p.st)) : h('span', null, stPill('sin'), ' El código base no figura en el catálogo recopilado.'));
   if (p.cat) { add('Sector / subsector', `${p.cat.s.join(' / ')} · ${p.cat.ss.join(' / ')}`); add('Nivel de cualificación de la versión del catálogo '+p.cat.c, lvText(p.cat.lv)+(p.cat.c===cod?' · misma versión consultada':' · referencia de otra versión; no se atribuye al código consultado')); add('Vigencia y modalidad de la versión del catálogo', `${p.cat.vg} · ${p.cat.md} · ${p.cat.nu} UCL en el catálogo`); }
   const mxp = MXPAIRS.filter(x => x.base === p.base);
@@ -2126,7 +2126,7 @@ function careerEvidenceSummary() {
       panel.appendChild(readingTable([{h:'Perfil reconocido',v:r=>r.p},{h:'Código y versión del registro RAP',v:r=>r.c},{h:'Asignaturas convalidadas según articulación',n:true,v:r=>r.a}],rap,{max:30,csv:'resumen_rap_'+norm(row.k).replace(/ /g,'_')+'.csv',empty:'Sin registro de reconocimiento para esta carrera en la recopilación consultada.'}));
       panel.appendChild(h('h4',null,'Credenciales anunciadas en el programa'));
       panel.appendChild(h('p',{class:'mini'},'Los anuncios documentan lo publicado. Para cada credencial deben confirmarse su tipo, emisor y mecanismo de obtención.'));
-      panel.appendChild(readingTable([{h:'Semestre',n:true,v:r=>r.s},{h:'Credencial anunciada',v:r=>r.n},{h:'Código declarado',v:r=>r.cod||'Sin código declarado'},{h:'Identificación',v:r=>r.framing},{h:'Alcance por confirmar',v:r=>r.followup}],announced,{max:20,csv:'resumen_credenciales_'+norm(row.k).replace(/ /g,'_')+'.csv'}));
+      panel.appendChild(readingTable([{h:'Semestre',n:true,v:r=>r.s},{h:'Credencial anunciada',v:r=>r.n},{h:'Código declarado',v:r=>r.cod||'Sin código declarado'},{h:'Identificación',v:r=>r.framing},{h:'Alcance y respaldo de la credencial',v:r=>r.followup}],announced,{max:20,csv:'resumen_credenciales_'+norm(row.k).replace(/ /g,'_')+'.csv'}));
       panel.appendChild(sourceLine(['CV_ART','CFT_PROG'],'RAP y credenciales son relaciones diferentes; aprobar módulos no demuestra por sí solo certificación ChileValora.'));
       return;
     }
@@ -2307,8 +2307,8 @@ function referenceComparison(body) {
     const comparisonExplanation=state.career!=='all'&&!CAR12.includes(state.career)?'La matriz no está disponible para esta carrera; se conservan los registros RAP que existan sin inferir ausencia de referentes curriculares.':'La vista de comparación une los códigos base de ambas fuentes: '+matrixBaseN+' + '+rapBaseN+' − '+sharedN+' compartidos = '+all.length+' pares carrera–perfil.';
     const universeLine=fold('Cómo se relacionan la matriz y el RAP',h('div',null,
       h('p',{id:'s4UniverseCounts'},matrixLabel+' · '+rapN+' registros RAP. '+comparisonExplanation),
-      h('p',null,'La matriz documenta asociaciones curriculares; su aplicación específica está pendiente de validación del CFT. El RAP informa reconocimientos para convalidar asignaturas; no se espera que todos los referentes de la matriz figuren en ese registro.'),
-      h('p',null,'Una diferencia de versión no invalida automáticamente el RAP registrado. La vigencia del catálogo se informa por separado; una fecha pendiente de confirmar no significa ausencia de articulación.')),false);
+      h('p',null,'La matriz documenta asociaciones curriculares, sin acreditar por sí sola su aplicación en los programas. El RAP informa reconocimientos para convalidar asignaturas; no se espera que todos los referentes de la matriz figuren en ese registro.'),
+      h('p',null,'Una diferencia de versión no invalida automáticamente el RAP registrado. La vigencia del catálogo se informa por separado; una fecha no acreditada en esa fuente no significa ausencia de articulación.')),false);
     const articulated=rows.filter(r=>r.arCodes.length), matrixOnly=rows.filter(r=>!r.arCodes.length);
     const same=articulated.filter(r=>r.relation.key==='same'), different=articulated.filter(r=>['different','partial'].includes(r.relation.key));
     summary.appendChild(h('h4',null,'CFT Estatal de Coquimbo · '+(state.career==='all'?'todas las carreras':state.career)));
@@ -2511,8 +2511,8 @@ function renderS5() {
       { h: 'Sem.', n: true, v: r => r.s }, { h: 'Certificación semestral declarada', v: r => r.n }, { h: 'Código declarado', v: r => r.cod || 'Sin código declarado' },
       { h: 'Identificación en el programa', v: r => progE(r.e) }, { h: 'Perfiles de matriz en el semestre', v: r => rowsAll.length ? uniq(rowsAll.filter(x => x.s === r.s).map(x => x.cod)).length : 'Sin hoja' },
       { h: 'Verificación del código', v: r => programCodeNote(r.cod)||(r.cod ? ST[catStatus(r.cod)].l : 'Sin código declarado') },
-      { h: 'Alcance por confirmar', v:r=>r.e==='Sí, indicado explícitamente en el PDF'?'Perfil ChileValora anunciado: confirmar credencial, centro y evaluación':'Confirmar tipo de credencial, emisor y requisitos' },
-    ], certs.map(r=>({...r,k})), { max: 12, csv: `programa_certificaciones_${norm(k).replace(/ /g, '_')}.csv`, csvCols: [{ h: 'Carrera', v: () => k }, { h: 'Semestre', k: 's' }, { h: 'Certificacion_semestral', k: 'n' }, { h: 'Codigo_declarado', v: r => r.cod || '' }, { h: 'Identificacion', v: r => progE(r.e) }, { h: 'Observaciones', v: r => progO(r.o) },{h:'Revision_codigo_publicado',v:r=>programCodeNote(r.cod)},{h:'Alcance_por_confirmar',v:r=>r.e==='Sí, indicado explícitamente en el PDF'?'Confirmar credencial, centro acreditado y proceso de evaluación ChileValora':'Confirmar tipo de credencial, emisor y requisitos'}] }));
+      { h: 'Alcance y respaldo de la credencial', v:r=>r.e==='Sí, indicado explícitamente en el PDF'?'Perfil ChileValora anunciado: la certificación requiere respaldo, centro acreditado y evaluación':'El tipo de credencial, emisor y requisitos determinan su alcance' },
+    ], certs.map(r=>({...r,k})), { max: 12, csv: `programa_certificaciones_${norm(k).replace(/ /g, '_')}.csv`, csvCols: [{ h: 'Carrera', v: () => k }, { h: 'Semestre', k: 's' }, { h: 'Certificacion_semestral', k: 'n' }, { h: 'Codigo_declarado', v: r => r.cod || '' }, { h: 'Identificacion', v: r => progE(r.e) }, { h: 'Observaciones', v: r => progO(r.o) },{h:'Revision_codigo_publicado',v:r=>programCodeNote(r.cod)},{h:'Alcance_y_respaldo',v:r=>r.e==='Sí, indicado explícitamente en el PDF'?'La certificación ChileValora requiere respaldo, centro acreditado y proceso de evaluación':'El tipo de credencial, emisor y requisitos determinan su alcance'}] }));
     program.appendChild(h('p', { class: 'mini' }, 'Las certificaciones semestrales del programa se presentan por separado de los perfiles de la matriz. Compartir semestre no establece equivalencia entre ambas referencias.'));
     program.appendChild(fold('Asignaturas del plan de estudio', readingTable([{ h: 'Sem.', n: true, v: r => r.s }, { h: 'N°', n: true, v: r => r.o }, { h: 'Ámbito', v: r => r.a }, { h: 'Asignatura o módulo', v: r => r.n }], P.mods.filter(r => STATE.sem === 'all' || r.s === STATE.sem), { max: 30, csv: `programa_asignaturas_${norm(k).replace(/ /g, '_')}.csv` })));
     host.appendChild(fold(`Programa de estudio: ${certs.length} certificaciones semestrales en la selección`, program, !rowsAll.length));
@@ -2817,7 +2817,7 @@ function renderS8() {
       implication:'Los perfiles y sus UCL permiten examinar cómo la formación se relaciona con ocupaciones, actividades y criterios de desempeño de los sectores analizados.',
       e:`De los ${C.mxPerfiles} códigos, ${C.mxSt.exacta} de ${C.mxPerfiles} coinciden en código y versión con el catálogo. Las fichas permiten consultar sector, nivel y UCL por carrera. ${sinHoja.join(' y ')} requieren completar sus referentes ocupacionales, pues no tienen hoja en la matriz recibida.`,
       i:'La capacitación respalda el uso curricular de perfiles y UCL. El MCTP permite examinar la complejidad y la progresión de aprendizajes; los niveles 2 o 3 pueden aportar a etapas iniciales de una carrera.',
-      v:'La aplicación específica de la matriz está pendiente de validación del CFT. Se deben distinguir el nivel del perfil, el del bloque formativo y el resultado de egreso.',
+      v:'La matriz no acredita por sí sola su aplicación en los programas. El nivel del perfil, el del bloque formativo y el resultado de egreso corresponden a referencias distintas.',
       decision:'Acordar con cada carrera qué perfiles, UCL y resultados de aprendizaje aportan a su formación, y completar el mapa de referentes de las 14 carreras.'},
     {id:'hall-rap',aliases:[],t:'El RAP registrado ofrece una vía de continuidad para personas certificadas',short:'Acceso por RAP',sec:'s4',order:1,
       summary:`El registro documenta ${C.coqArt.reg} reconocimientos de perfiles en ${C.coqArt.carreras} carreras, con el número oficial de asignaturas convalidadas por perfil.`,
@@ -2874,17 +2874,17 @@ function renderS8() {
       fold('Evidencia, interpretación y condiciones',h('div',{class:'hcols'},
         h('div',{class:'hc obs'},h('div',{class:'tag'},'Evidencia'),h('p',null,x.e)),
         h('div',{class:'hc interp'},h('div',{class:'tag'},'Lectura estratégica'),h('p',null,x.i)),
-        h('div',{class:'hc valid'},h('div',{class:'tag'},'Condiciones por confirmar'),h('p',null,x.v)))));
+        h('div',{class:'hc valid'},h('div',{class:'tag'},'Alcance y condiciones de aplicación'),h('p',null,x.v)))));
     if(x.id==='hall2')card.appendChild(h('p',{class:'mini'},h('a',{href:'#revision-comunicacion-cft'},'Consultar los materiales y el respaldo de las 60 declaraciones →')));
     body.appendChild(card);
   });
   const number=id=>H.findIndex(x=>x.id===id)+1;
-  const priority=h('div',{class:'stage priorities',id:'prioridades-hallazgos'},h('h3',null,'Agenda propuesta para el CFT'),h('p',{class:'sub'},'Cuatro líneas de trabajo para convertir los referentes ocupacionales y formativos en decisiones institucionales. Su alcance debe acordarse con el CFT.'),
+  const priority=h('div',{class:'stage priorities',id:'prioridades-hallazgos'},h('h3',null,'Agenda de recomendaciones para el CFT'),h('p',{class:'sub'},'Cuatro líneas de trabajo para convertir los referentes ocupacionales y formativos en decisiones institucionales. Su implementación corresponde a las decisiones y atribuciones del CFT.'),
     h('ol',{class:'priority-list'},actions.map(a=>h('li',null,h('div',null,h('a',{href:'#prioridad-'+a.n},h('strong',null,a.title)),h('p',null,a.text),h('span',{class:'mini'},'Respaldo: ',a.evidence.map(id=>h('a',{href:'#'+id},'Hallazgo '+number(id)+' ')),a.target?h('a',{href:'#'+a.target},'Ver casos'):null))))));
   priority.appendChild(fold('Productos, participantes y condiciones para avanzar',h('div',null,actions.map(a=>h('article',{class:'priority-detail',id:'prioridad-'+a.n},h('h4',null,a.n+'. '+a.title),h('dl',{class:'action-fields'},h('dt',null,'Qué examinar'),h('dd',null,a.look),h('dt',null,'Producto esperado'),h('dd',null,a.product),h('dt',null,'Participantes sugeridos'),h('dd',null,a.who),h('dt',null,'Condición para avanzar'),h('dd',null,a.condition)))),
     h('button',{class:'btn sm',type:'button',onclick:()=>downloadCSV('prioridades_revision_cft.csv',[
       {h:'Orden_sugerido',k:'n'},{h:'Accion',k:'title'},{h:'Alcance',k:'text'},{h:'Que_mirar',k:'look'},{h:'Producto_esperado',k:'product'},{h:'Participantes_sugeridos',k:'who'},{h:'Condicion_para_avanzar',k:'condition'},
-      {h:'Hallazgos_de_respaldo',v:a=>a.evidence.map(id=>'Hallazgo '+number(id)).join(' | ')},{h:'Anclas_de_respaldo',v:a=>a.evidence.map(id=>'#'+id).join(' | ')},{h:'Caracter',v:()=> 'Recomendación técnica para validación institucional; sin compromiso de implementación.'}
+      {h:'Hallazgos_de_respaldo',v:a=>a.evidence.map(id=>'Hallazgo '+number(id)).join(' | ')},{h:'Anclas_de_respaldo',v:a=>a.evidence.map(id=>'#'+id).join(' | ')},{h:'Caracter',v:()=> 'Recomendación técnica; su implementación corresponde a las decisiones institucionales del CFT.'}
     ],actions)},'Exportar acciones sugeridas'))));
   body.appendChild(priority);
   const caseBody = h('div',null,
@@ -3151,7 +3151,7 @@ const HOWTO = {
   s1: { t: 'Cómo leer el panorama del CFT', items: [
     ['Alcance por carrera', 'Las tres barras muestran cuántas de las 14 carreras figuran en la matriz, en el RAP registrado y en las menciones explícitas a perfiles ChileValora de las credenciales anunciadas. Seleccione una barra para abrir su evidencia. Son relaciones independientes; una carrera puede aparecer en varias.'],
     ['Diagrama complementario', 'El Sankey institucional permanece en un desplegable bajo las barras. Su última columna informa presencia del perfil en cualquier carrera de la institución; el detalle precisa el reconocimiento en la misma carrera.'],
-    ['Idea central', 'Distinga reconocimiento para convalidar asignaturas, referentes curriculares y credenciales. El uso específico de la matriz debe validarse con el CFT; la certificación ChileValora requiere un proceso con centro acreditado.'],
+    ['Idea central', 'Distinga reconocimiento para convalidar asignaturas, referentes curriculares y credenciales. La matriz documenta asociaciones curriculares; la certificación ChileValora requiere un proceso con centro acreditado.'],
     ['Tres preguntas', 'Cada respuesta conduce al reconocimiento RAP, la ficha por carrera o las certificaciones anunciadas. También puede abrir los hallazgos y los planes SENCE.'],
     ['Alcance y fuentes', 'El desplegable inferior conserva las fechas, los límites y las fuentes. Los indicadores detallados se consultan en las secciones correspondientes.'] ] },
   s2: { t: 'Cómo usar los controles de esta sección', items: [
@@ -3203,7 +3203,7 @@ const HOWTO = {
   s8: { t: 'Cómo leer los hallazgos estratégicos', items: [
     ['Temas', 'Seis hallazgos relacionan los perfiles ocupacionales y los planes SENCE con decisiones curriculares y posibles trayectorias para el CFT.'],
     ['Decisión para el CFT', 'Cada hallazgo propone un uso institucional concreto, con evidencia e interpretación disponibles en el detalle.'],
-    ['Agenda propuesta', 'Cuatro líneas reúnen productos, participantes sugeridos y condiciones para avanzar. Se pueden exportar a CSV.'],
+    ['Agenda de recomendaciones', 'Cuatro líneas reúnen productos, participantes sugeridos y condiciones de implementación. Se pueden exportar a CSV.'],
     ['Casos de revisión', 'La selección por coincidencia documental permite iniciar un estudio acotado. No acredita por sí sola pertinencia, equivalencia curricular ni acceso.'],
     ['Respaldo documental', 'La tabla de certificaciones anunciadas y las observaciones de códigos se conservan en Metodología.'] ] },
   s9: { t:'Cómo consultar un perfil',items:[
@@ -3258,7 +3258,7 @@ function openGuide() {
   const readings = {
     s2: [`El CFT Estatal de Coquimbo registra ${C.coqArt.bases} perfiles de articulación entre los ${C.artInst.length} CFT presentes en la comparación.`, 'El panorama nacional permite identificar perfiles compartidos y experiencias de referencia; el número de perfiles no mide calidad institucional.', [7]],
     s3: [`La síntesis conecta los perfiles de ${CAR12.length} carreras con las referencias del sistema de capacitación y certificación.`, 'El detalle de cada carrera distingue los perfiles, los reconocimientos RAP y las credenciales anunciadas.', [1,'rap',5]],
-    s4: ['El registro de articulación define qué perfil y versión reconoce cada carrera y cuántas asignaturas convalida.', 'La diferencia de versión no invalida automáticamente el RAP registrado. La matriz aporta asociaciones curriculares cuyo uso específico debe validar el CFT. La obtención de una certificación durante la formación se verifica por separado.', ['rap',1]],
+    s4: ['El registro de articulación define qué perfil y versión reconoce cada carrera y cuántas asignaturas convalida.', 'La diferencia de versión no invalida automáticamente el RAP registrado. La matriz documenta referentes curriculares, sin acreditar por sí sola su aplicación en los programas. La obtención de una certificación durante la formación tiene requisitos y procedimientos propios.', ['rap',1]],
     s6: [`${C.mxConCen.length} perfiles de la matriz tienen centros asociados en Coquimbo; ${C.mxConCert.length} cuentan con antecedentes históricos regionales.`, 'Son antecedentes históricos y de registro, no una medida directa de demanda o pertinencia. Los centros pueden operar fuera de su región registrada; cada ruta requiere confirmar alcance y condiciones.', [4]],
     s7: [`Los planes SENCE se relacionan con ${C.mxConPf.length} de los ${C.mxPerfiles} perfiles citados en la matriz.`, 'El vínculo permite estudiar contenidos y requisitos de formación para las carreras. El catálogo no demuestra ejecución regional ni equivalencia con las asignaturas.', [5]],
     s9: ['La consulta reúne la evidencia de cada perfil vinculado al CFT Estatal de Coquimbo.', 'Para cada carrera se reúnen las referencias de matriz, articulación y materiales publicados. El contexto nacional es opcional; los nombres sin código no se asignan automáticamente a un perfil.', [1,'rap',2,4,5]],
@@ -3269,7 +3269,7 @@ function openGuide() {
   });
   ['s1','s2','s3','s4','s6','s7'].forEach(id => {
     const el = document.getElementById(id), findings = el && el.querySelector('.findings');
-    if (findings) { const f = fold('Detalle de lectura: evidencia, interpretación y validación', h('div')); findings.replaceWith(f); f.querySelector('.in').appendChild(findings); }
+    if (findings) { const f = fold('Detalle de lectura: evidencia, interpretación y alcance', h('div')); findings.replaceWith(f); f.querySelector('.in').appendChild(findings); }
   });
   // Keep dense secondary views accessible without extending the first reading.
   const compactStages = { s2: ['Perfiles compartidos entre CFT Estatales'], s3: ['Perfiles citados en la matriz según correspondencia con el catálogo'], s7: ['Perfiles de cada carrera con y sin Plan Formativo vinculado', 'Catálogo nacional de planes y estadísticas regionales de capacitación'] };
